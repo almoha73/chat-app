@@ -1,43 +1,37 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useState, useEffect } from "react";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../firebase";
 
-// Créer le contexte d'authentification
-const AuthContext = React.createContext();
 
-// Fonction qui permet d'utiliser le contexte d'authentification
-export function useAuth() {
-  return useContext(AuthContext);
-}
+// Créer le contexte d'authentification
+export const AuthContext = React.createContext();
 
 // Fonction qui fournit le contexte d'authentification aux composants enfants
-export  function AuthProvider({ children }) {
+export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
 
-  // Fonction pour connecter l'utilisateur avec Google
+  //Fonction pour connecter l'utilisateur avec Google
   async function loginWithGoogle() {
-    const provider = auth.GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      setCurrentUser(result.user);
-      return result;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    console.log(result.user);
+    return result.user;
   }
 
-  // Fonction pour connecter l'utilisateur avec Facebook
+  // Fonction pour connecter l'utilisateur à Facebook
   async function loginWithFacebook() {
-    const provider = auth.FacebookAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      setCurrentUser(result.user);
-      return result;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
+    const provider = new FacebookAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    console.log(result.user);
+    return result.user;
   }
 
   // Fonction pour connecter l'utilisateur
@@ -53,10 +47,17 @@ export  function AuthProvider({ children }) {
   }
 
   // Fonction pour inscrire un utilisateur
-  async function signup(email, password) {
+  async function signup(email, password, name) {
     try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      setCurrentUser(result.user);
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+        
+      );
+      const user = result.user;
+     
+      setCurrentUser(user);
       return result;
     } catch (error) {
       console.log(error);
@@ -64,9 +65,11 @@ export  function AuthProvider({ children }) {
     }
   }
 
+ 
+
   // Fonction pour déconnecter l'utilisateur
   function logout() {
-    return auth().signOut();
+    return signOut(auth);
   }
 
   // Effet qui écoute les changements d'état de l'utilisateur Firebase
