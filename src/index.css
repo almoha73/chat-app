@@ -3,4 +3,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* *, ::after, ::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+/* Cacher la scrollbar sur les navigateurs WebKit */
+textarea::-webkit-scrollbar {
+    display: none;
+  }
 
+  /* pour Chrome */
+::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #5DC054;
+    border-radius: 8px;
+  }
+  
