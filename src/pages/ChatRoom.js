@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import ChatWindow from "../components/ChatWindow";
 import { AuthContext } from "../context/AuthContext";
-import Signin from "../pages/SignIn"
+import Signin from "../pages/SignIn";
 
 function ChatRoom() {
   const [selectedUser, setSelectedUser] = useState(null);
-  const{currentUser} = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext);
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -20,8 +20,6 @@ function ChatRoom() {
     navigate("/signin");
   };
 
-  
-
   console.log(selectedUser);
   return (
     <>
@@ -31,20 +29,20 @@ function ChatRoom() {
           logout
         </button>
         <main className="lg:flex h-auto lg:h-screen mb-8 justify-center items-center w-11/12 border rounded-lg">
-        {currentUser ? (
-        <>
-          <Sidebar handleSelectUser={handleSelectUser} />
-          {selectedUser ? (
-            <ChatWindow key={selectedUser.id} selectedUser={selectedUser} />
+          {currentUser ? (
+            <>
+              <Sidebar handleSelectUser={handleSelectUser} />
+              {selectedUser ? (
+                <ChatWindow key={selectedUser.id} selectedUser={selectedUser} />
+              ) : (
+                <div className="flex-1 flex justify-center items-center text-4xl font-bold text-gray-400">
+                  Sélectionnez un utilisateur pour commencer à discuter
+                </div>
+              )}
+            </>
           ) : (
-            <div className="flex-1 flex justify-center items-center text-4xl font-bold text-gray-400">
-              Sélectionnez un utilisateur pour commencer à discuter
-            </div>
+            <Signin />
           )}
-        </>
-      ) : (
-        <Signin />
-      )}
         </main>
       </div>
     </>
