@@ -1,21 +1,23 @@
 import google from "../assets/google.svg";
 import facebook from "../assets/facebook.svg";
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Signin() {
   const navigate = useNavigate();
-  let { loginWithGoogle, loginWithFacebook, login } = useContext(AuthContext);
-  const [currentUser, setCurrentUser] = useState(null);
+  const { loginWithGoogle, loginWithFacebook, login, currentUser } = useContext(AuthContext);
   const [formState, setFormState] = useState({
     email: "",
-    password: "",
-    name: ""
+    password: ""
   });
 
-console.log(currentUser);
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/chat");
+    }
+  }, [currentUser, navigate]);
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -28,13 +30,11 @@ console.log(currentUser);
 
   async function handleFormSubmit(event) {
     event.preventDefault();
-
     try {
       await login(formState.email, formState.password);
-      navigate("/chat");
+      // navigation automatique via useEffect
     } catch (error) {
       console.log(error);
-      // Afficher le message d'erreur à l'utilisateur
     }
   }
 
@@ -42,7 +42,7 @@ console.log(currentUser);
     try {
       const result = await loginWithGoogle();
       console.log(result);
-      setCurrentUser(result);
+      // setCurrentUser(result);
       navigate("/chat");
     } catch (error) {
       console.log(error);
@@ -53,7 +53,7 @@ console.log(currentUser);
     try {
       const result = await loginWithFacebook();
       console.log(result);
-      setCurrentUser(result);
+      // setCurrentUser(result);
       navigate("/chat");
     } catch (error) {
       console.log(error);
@@ -65,7 +65,7 @@ console.log(currentUser);
   return (
     <>
       <main className="bg-primary h-screen  flex w-full items-center justify-center">
-        <div className="flex min-h-full w-11/12 flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="flex min-h-full w-full sm:w-11/12 flex-col justify-center py-12 sm:px-6 lg:px-8">
           <div className=" sm:mx-auto sm:w-full sm:max-w-md">
             <h2 className="lg:mt-6 text-center text-xl lg:text-3xl font-bold tracking-tight text-white">
               Sign in to your account
@@ -91,7 +91,7 @@ console.log(currentUser);
                       type="email"
                       autoComplete="email"
                       required
-                      className="block w-full   rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
+                      className="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#27ae60] focus:outline-none focus:ring-[#27ae60] sm:text-sm"
                     />
                   </div>
                 </div>
@@ -117,38 +117,15 @@ console.log(currentUser);
                   </div>
                   
                 </div>
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Nom ou pseudo
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      value={formState.name}
-                      onChange={handleInputChange}
-                      id="name"
-                      name="name"
-                      type="name"
-                      autoComplete="current-name"
-                      placeholder="Entrer votre nom ou pseudo"
-                      required
-                      className="block w-full autofill:bg-yellow-200  rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
-                    />
-                  </div>
-                  
-                </div>
 
                 {/*  */}
 
                 <div>
                   <button
-                    // disabled={isLoading}
                     type="submit"
-                    className="flex w-28 justify-center mx-auto rounded-md border border-transparent bg-tertiary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                    className="text-white p-2 bg-[#27ae60] rounded-lg hover:bg-[#14532d] transition"
                   >
-                    {/* {isLoading ? "Loading..." : "Sign in"} */} SignIn
+                    Sign up
                   </button>
                 </div>
               </form>

@@ -65,15 +65,15 @@ const ChatWindow = ({ selectedUser }) => {
     }
   }, [currentUser, selectedUser]);
 
-  // ...
-
   useEffect(() => {
-    messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
 
   console.log("Messages:", messages);
   return (
-    <div className="h-[calc(100vh-200px)] flex-1 flex flex-col justify-end items-end">
+    <section className="w-full flex-1 flex flex-col justify-end bg-[#F5F7FA] rounded-r-lg shadow-lg h-[calc(100vh-180px)] min-h-0">
       <MessageList
         messages={messages}
         currentUser={currentUser}
@@ -85,7 +85,7 @@ const ChatWindow = ({ selectedUser }) => {
         currentUser={currentUser}
         selectedUser={selectedUser}
       />
-    </div>
+    </section>
   );
 };
 

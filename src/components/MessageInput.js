@@ -41,22 +41,22 @@ const MessageInput = ({
   };
 
   return (
-    <div className="flex justify-end w-full p-4 fixed bottom-6">
+    <div className="flex items-center w-full px-6 py-4 bg-[#f5f7fa] border-t border-gray-200">
       <textarea
         ref={inputRef}
-        type="text"
         value={messageText}
         onChange={(e) => {
           setMessageText(e.target.value);
-          e.target.style.height = "2rem"; // réinitialiser la hauteur de l'input
-          e.target.style.height = e.target.scrollHeight + "px"; // ajuster la hauteur de l'input
+          e.target.style.height = "2rem";
+          e.target.style.height = e.target.scrollHeight + "px";
         }}
-        className="mr-4 p-2 min-h-4  max-h-32 resize-none rounded-3xl" // ajouter une hauteur minimale à l'input
-        style={{ height: "2rem" }}
+        placeholder="Écrivez un message..."
+        className="flex-1 resize-none rounded-2xl border border-gray-300 p-3 mr-4 bg-white focus:outline-none focus:border-[#27ae60] transition"
+        style={{ minHeight: "2rem", maxHeight: "6rem" }}
       />
       <button
         onClick={handleSend}
-        className="border p-2 rounded-lg bg-tertiary text-white h-8"
+        className="bg-[#27ae60] text-white px-6 py-2 rounded-2xl hover:bg-[#14532d] transition"
       >
         Envoyer
       </button>

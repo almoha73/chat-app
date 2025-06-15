@@ -3,11 +3,13 @@ import Message from "./Message";
 
 const MessageList = ({ messages, currentUser, messagesEndRef }) => {
   return (
-    <div className="overflow-y-auto w-10/12 flex flex-col items-end h-auto">
-      {messages.map((message) => (
-        <Message key={message.id} message={message} currentUser={currentUser} />
-      ))}
-      <div ref={messagesEndRef}></div>
+    <div className="flex-1 overflow-y-auto px-2 sm:px-6 py-4 max-h-[50vh] lg:max-h-none">
+      {messages
+        .sort((a, b) => a.timestamp?.seconds - b.timestamp?.seconds)
+        .map((message) => (
+          <Message key={message.id} message={message} currentUser={currentUser} />
+        ))}
+      <div ref={messagesEndRef} />
     </div>
   );
 };
